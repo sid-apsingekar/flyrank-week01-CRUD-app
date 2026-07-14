@@ -1,5 +1,14 @@
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Request
+from pydantic import BaseModel
+from fastapi.exceptions import RequestValidationError
+from fastapi.responses import JSONResponse
 app = FastAPI()
+
+@app.exception_handler(RequestValidationError)
+async def validation_exception_handler(request:Request,exc:RequestValidationError):
+    return JSONResponse(status_code=400, content={"error":"Invalid request body"})
+class TaskCreate(BaseModel):
+    title:str
 
 tasks = [
     {
@@ -42,3 +51,13 @@ def get_task(task_id:int):
         if task['id']==task_id:
             return task
     raise HTTPException(status_code=404,detail=f'Task {task_id} not found')
+
+@app.post('/tasks',status_code=201)
+def create_task(task:TaskCreate):
+    if not task.title or not task.title.strip():
+        raise HTTPException(status_code=400,detail='Title is required')
+    new_id = max((t['id'] for t in tasks),default=0)+1
+    new_task = {
+        'id':new_id,'title':task.title,'done':False}
+    tasks.append(new_task)
+    return new_task
