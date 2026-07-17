@@ -42,7 +42,7 @@ tasks = [
 ]
 
 
-@app.get("/")
+@app.get("/",summary="API Information",description="Returns basic information about the Task API, including its version and available endpoints.")
 def home():
     return {
         "name": "Task API",
@@ -51,19 +51,19 @@ def home():
     }
 
 
-@app.get("/health")
+@app.get("/health",summary="Health Check",description="Checks whether the API sever is running and respondign correctly.")
 def health():
     return {
         "status": "ok"
     }
 
 
-@app.get("/tasks")
+@app.get("/tasks",summary="List All Tasks",description="Returns the complete list of tasks currently stored in memory.")
 def list_tasks():
     return tasks
 
 
-@app.get("/tasks/{task_id}")
+@app.get("/tasks/{task_id}",summary="Get Task by ID",description="Retrieves a single task using its unique ID. Returns 404 if task does not exist.")
 def get_task(task_id: int):
     for task in tasks:
         if task["id"] == task_id:
@@ -75,7 +75,7 @@ def get_task(task_id: int):
     )
 
 
-@app.post("/tasks", status_code=201)
+@app.post("/tasks", status_code=201,summary="Create a New Task",description="Create a new task with the provided title. The task is assigned a unique ID and is marked as incomplete by default.")
 def create_task(task: TaskCreate):
 
     if not task.title.strip():
@@ -97,7 +97,7 @@ def create_task(task: TaskCreate):
     return new_task
 
 
-@app.put("/tasks/{task_id}")
+@app.put("/tasks/{task_id}",summary="Update a Task",description="Updates an existing task's title and completion status. Returns 404 if the task does not exist.")
 def update_task(task_id: int, task: TaskUpdate):
 
     if not task.title.strip():
@@ -118,7 +118,7 @@ def update_task(task_id: int, task: TaskUpdate):
     )
 
 
-@app.delete("/tasks/{task_id}", status_code=204)
+@app.delete("/tasks/{task_id}", status_code=204,summary="Delete a Task",description="Deletes a task by its ID. Returns 204 on successful deletion or 404 if the task is not found.")
 def delete_task(task_id: int):
 
     for index, task in enumerate(tasks):
