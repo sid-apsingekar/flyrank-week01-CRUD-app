@@ -19,7 +19,7 @@ def init_db():
     if count == 0:
         conn.execute("INSERT INTO tasks (title, done) VALUES (?,?)", ("Buy milk",0))
         conn.execute("INSERT INTO tasks (title, done) VALUES (?,?)", ("Walk the dog",0))
-        conn.execute("INSERT INTO tasks (title, done) VALUES (?,?)", ("Finish assingement",1))
+        conn.execute("INSERT INTO tasks (title, done) VALUES (?,?)", ("Finish assignment",1))
     conn.commit()
     conn.commit()
 
@@ -81,16 +81,22 @@ def health():
     }
 
 
-@app.get("/tasks",summary="List All Tasks",description="Returns the complete list of tasks currently stored in memory.")
+@app.get("/tasks",summary="List All Tasks",description="Returns the complete list of tasks currently stored in database .")
 def list_tasks():
-    return tasks
+    conn = get_connection()
+    rows = conn.execute("SELECT * FROM tasks").fetchall()
+    conn.close()
+    return [{"id":r[0],"title":r[1],"done": bool(r[2])} for r in rows]
 
 
 @app.get("/tasks/{task_id}",summary="Get Task by ID",description="Retrieves a single task using its unique ID. Returns 404 if task does not exist.")
 def get_task(task_id: int):
-    for task in tasks:
-        if task["id"] == task_id:
-            return task
+    conn = get_connection()
+    row = conn.execute("SELECT * FROM tasks WHERE id = ? ",(task_id,)).fetchone()
+    conn.close()
+    if row is None:
+        raise HTTPException(status_code=404, detail=f"Task {task_id} not found")
+    return {"id":row[0],"title":row[1],"done":bool(row[2])}
 
     raise HTTPException(
         status_code=404,
