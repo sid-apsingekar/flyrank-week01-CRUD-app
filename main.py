@@ -1,9 +1,30 @@
+import sqlite3
 from fastapi import FastAPI, HTTPException, Request
 from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse
 from pydantic import BaseModel
 
+
+def get_connection():
+    return sqlite3.connect("tasks.db")
+def init_db():
+    conn = get_connection()
+    conn.execute("""
+    CREATE TABLE IF NOT EXISTS tasks(
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            title TEXT NOT NULL,
+            done INTEGER NOT NULL DEFAULT 0)
+    """)
+    count = conn.execute("SELECT COUNT(*) FROM tasks").fetchone()[0]
+    if count == 0:
+        conn.execute("INSERT INTO tasks (title, done) VALUES (?,?)", ("Buy milk",0))
+        conn.execute("INSERT INTO tasks (title, done) VALUES (?,?)", ("Walk the dog",0))
+        conn.execute("INSERT INTO tasks (title, done) VALUES (?,?)", ("Finish assingement",1))
+    conn.commit()
+    conn.commit()
+
 app = FastAPI()
+init_db()
 
 
 @app.exception_handler(RequestValidationError)
@@ -12,6 +33,8 @@ async def validation_exception_handler(request: Request, exc: RequestValidationE
         status_code=400,
         content={"error": "Invalid request body"}
     )
+
+
 
 
 class TaskCreate(BaseModel):
@@ -51,7 +74,7 @@ def home():
     }
 
 
-@app.get("/health",summary="Health Check",description="Checks whether the API sever is running and respondign correctly.")
+@app.get("/health",summary="Health Check",description="Checks whether the API server is running and responding correctly.")
 def health():
     return {
         "status": "ok"
