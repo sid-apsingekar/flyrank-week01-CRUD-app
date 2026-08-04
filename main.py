@@ -7,6 +7,7 @@ from pydantic import BaseModel
 
 def get_connection():
     return sqlite3.connect("tasks.db")
+
 def init_db():
     conn = get_connection()
     conn.execute("""
@@ -113,18 +114,13 @@ def create_task(task: TaskCreate):
             detail="Title is required"
         )
 
-    new_id = max((t["id"] for t in tasks), default=0) + 1
+    conn = get_connection()
+    cursor = conn.execute("INSERT INTO tasks (title,done) VALUES (?,?)",(task.title,0))
+    conn.commit()
+    new_id = cursor.lastrowid
+    conn.close()
 
-    new_task = {
-        "id": new_id,
-        "title": task.title,
-        "done": False
-    }
-
-    tasks.append(new_task)
-
-    return new_task
-
+    return {"id":new_id,"title":task.title,"done":False}
 
 @app.put("/tasks/{task_id}",summary="Update a Task",description="Updates an existing task's title and completion status. Returns 404 if the task does not exist.")
 def update_task(task_id: int, task: TaskUpdate):
