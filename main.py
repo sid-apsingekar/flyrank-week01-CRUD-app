@@ -131,27 +131,27 @@ def update_task(task_id: int, task: TaskUpdate):
             detail="Title is required"
         )
 
-    for t in tasks:
-        if t["id"] == task_id:
-            t["title"] = task.title
-            t["done"] = task.done
-            return t
-
-    raise HTTPException(
-        status_code=404,
-        detail=f"Task {task_id} not found"
+    conn = get_connection()
+    cursor = conn.execute(
+        "UPDATE tasks SET title=?, done=? WHERE id = ?",(task.title,int(task.done),task_id)
     )
+    conn.commit()
+    if cursor.rowcount==0:
+        conn.close()
+        raise HTTPException(status_code=404, detail=f"Task{task_id} not found")
+    conn.close()
+    return{"id":task_id,"title":task.title,"done":task.done}
 
 
 @app.delete("/tasks/{task_id}", status_code=204,summary="Delete a Task",description="Deletes a task by its ID. Returns 204 on successful deletion or 404 if the task is not found.")
 def delete_task(task_id: int):
 
-    for index, task in enumerate(tasks):
-        if task["id"] == task_id:
-            tasks.pop(index)
-            return
+    conn = get_connection()
+    cursor = conn.execute("DELETE FROM tasks WHERE id = ?",(task_id,))
+    conn.commit()
+    conn.close()
 
-    raise HTTPException(
-        status_code=404,
-        detail=f"Task {task_id} not found"
-    )
+    if cursor.rowcount == 0:
+        raise HTTPException(status_code=404, detail=f'Task {task_id} not found')
+
+    return
