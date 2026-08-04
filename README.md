@@ -40,6 +40,57 @@ content-type: application/json
 {"status":"ok"}
 ```
 
-## Swagger screenshot
 
-![Swagger UI screenshot](images/swagger-ui.svg)
+## Database
+
+- **Why SQLite:** SQLite is lightweight, zero-configuration, and perfect for small projects and demos. It requires no separate server, is easy to inspect with GUI tools, and simplifies local development and testing.
+- **Database file location:** The SQLite database file is `tasks.db` located in the project root (next to `main.py`).
+
+## How to start the project
+
+From the project root run the single command below (installs dependencies and starts the server):
+
+```bash
+pip install -r requirements.txt && uvicorn main:app --reload
+```
+
+The API and Swagger UI will be available at http://127.0.0.1:8000/docs.
+
+## Database viewer screenshot
+
+!![database viewer](image.png)
+
+## Example SQL query executed
+
+SQL used:
+
+```sql
+SELECT id, title, done FROM tasks;
+```
+
+Sample output (JSON representation printed after running the query):
+
+```json
+[
+	{
+		"id": 1,
+		"title": "Buy milk and eggs",
+		"done": true
+	},
+	{
+		"id": 3,
+		"title": "Finish assingement",
+		"done": true
+	},
+	{
+		"id": 4,
+		"title": "Test persistence",
+		"done": false
+	},
+	{
+		"id": 5,
+		"title": "Test persistence",
+		"done": false
+	}
+]
+```
