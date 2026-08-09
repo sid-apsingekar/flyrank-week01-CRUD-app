@@ -22,7 +22,7 @@ def init_db():
         conn.execute("INSERT INTO tasks (title, done) VALUES (?,?)", ("Walk the dog",0))
         conn.execute("INSERT INTO tasks (title, done) VALUES (?,?)", ("Finish assignment",1))
     conn.commit()
-    conn.commit()
+    conn.close()
 
 app = FastAPI()
 init_db()
