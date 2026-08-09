@@ -93,17 +93,17 @@ def list_tasks():
     conn = get_connection()
     rows = conn.execute("SELECT * FROM tasks").fetchall()
     conn.close()
-    return [{"id":r[0],"title":r[1],"done": bool(r[2])} for r in rows]
+    return [{"id":r[0],"title":r[1],"done": r[2]} for r in rows]
 
 
 @app.get("/tasks/{task_id}",summary="Get Task by ID",description="Retrieves a single task using its unique ID. Returns 404 if task does not exist.")
 def get_task(task_id: int):
     conn = get_connection()
-    row = conn.execute("SELECT * FROM tasks WHERE id = ? ",(task_id,)).fetchone()
+    row = conn.execute("SELECT * FROM tasks WHERE id = %s ",(task_id,)).fetchone()
     conn.close()
     if row is None:
         raise HTTPException(status_code=404, detail=f"Task {task_id} not found")
-    return {"id":row[0],"title":row[1],"done":bool(row[2])}
+    return {"id":row[0],"title":row[1],"done":row[2]}
 
     raise HTTPException(
         status_code=404,
