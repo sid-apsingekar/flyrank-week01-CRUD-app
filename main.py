@@ -121,12 +121,11 @@ def create_task(task: TaskCreate):
         )
 
     conn = get_connection()
-    cursor = conn.execute("INSERT INTO tasks (title,done) VALUES (?,?)",(task.title,0))
+    row = conn.execute("INSERT INTO tasks (title,done) VALUES (%s,%s) RETURNING id, title,done",(task.title,False)).fetchone()
     conn.commit()
-    new_id = cursor.lastrowid
     conn.close()
 
-    return {"id":new_id,"title":task.title,"done":False}
+    return {"id":row[0],"title":row[1],"done":row[2]}
 
 @app.put("/tasks/{task_id}",summary="Update a Task",description="Updates an existing task's title and completion status. Returns 404 if the task does not exist.")
 def update_task(task_id: int, task: TaskUpdate):
@@ -138,26 +137,26 @@ def update_task(task_id: int, task: TaskUpdate):
         )
 
     conn = get_connection()
-    cursor = conn.execute(
-        "UPDATE tasks SET title=?, done=? WHERE id = ?",(task.title,int(task.done),task_id)
-    )
+    row = conn.execute(
+    "UPDATE tasks SET title=%s, done=%s WHERE id = %s RETURNING id, title, done",
+    (task.title, task.done, task_id)
+        ).fetchone()
     conn.commit()
-    if cursor.rowcount==0:
-        conn.close()
-        raise HTTPException(status_code=404, detail=f"Task{task_id} not found")
     conn.close()
-    return{"id":task_id,"title":task.title,"done":task.done}
+    if row is None:
+        raise HTTPException(status_code=404, detail=f"Task {task_id} not found")
+    return {"id": row[0], "title": row[1], "done": row[2]}
 
 
 @app.delete("/tasks/{task_id}", status_code=204,summary="Delete a Task",description="Deletes a task by its ID. Returns 204 on successful deletion or 404 if the task is not found.")
 def delete_task(task_id: int):
 
     conn = get_connection()
-    cursor = conn.execute("DELETE FROM tasks WHERE id = ?",(task_id,))
+    row = conn.execute("DELETE FROM tasks WHERE id = %s RETURNING id",(task_id,)).fetchone()
     conn.commit()
     conn.close()
 
-    if cursor.rowcount == 0:
+    if row is None:
         raise HTTPException(status_code=404, detail=f'Task {task_id} not found')
 
     return
