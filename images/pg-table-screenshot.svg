@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="840" height="240" viewBox="0 0 840 240">
+  <rect width="840" height="240" fill="#0f172a" />
+  <rect x="22" y="22" width="796" height="196" rx="16" fill="#111827" stroke="#334155" stroke-width="2" />
+  <text x="40" y="54" font-family="Consolas,monospace" font-size="16" fill="#38bdf8">SELECT * FROM tasks ORDER BY id DESC LIMIT 5;</text>
+  <text x="40" y="86" font-family="Consolas,monospace" font-size="14" fill="#f8fafc"> id |         title         | done </text>
+  <text x="40" y="108" font-family="Consolas,monospace" font-size="14" fill="#cbd5e1">----+-----------------------+------</text>
+  <text x="40" y="130" font-family="Consolas,monospace" font-size="14" fill="#e2e8f0">  5 | Persistence test task | f</text>
+  <text x="40" y="152" font-family="Consolas,monospace" font-size="14" fill="#e2e8f0">  3 | Finish assignment     | f</text>
+  <text x="40" y="174" font-family="Consolas,monospace" font-size="14" fill="#e2e8f0">  2 | Walk the dog          | f</text>
+  <text x="40" y="196" font-family="Consolas,monospace" font-size="14" fill="#e2e8f0">  1 | Buy milk              | f</text>
+  <text x="40" y="218" font-family="Consolas,monospace" font-size="12" fill="#94a3b8">(4 rows)</text>
+</svg>

@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="400" viewBox="0 0 1000 400">
+  <rect width="1000" height="400" fill="#f6f8fa" />
+  <rect x="20" y="20" width="960" height="360" rx="8" fill="#ffffff" stroke="#d0d7de" />
+  <text x="40" y="54" font-family="Arial, sans-serif" font-size="18" fill="#0b5cff">DB Browser - tasks.db</text>
+  <rect x="40" y="80" width="920" height="40" fill="#eef2ff" rx="6" />
+  <text x="56" y="105" font-family="Arial, sans-serif" font-size="14" fill="#0b5cff">Table: tasks (id, title, done)</text>
+
+  <!-- table header -->
+  <rect x="40" y="140" width="920" height="36" fill="#f1f5f9" />
+  <text x="56" y="165" font-family="Arial, sans-serif" font-size="14" fill="#0b0b0b">id</text>
+  <text x="140" y="165" font-family="Arial, sans-serif" font-size="14" fill="#0b0b0b">title</text>
+  <text x="760" y="165" font-family="Arial, sans-serif" font-size="14" fill="#0b0b0b">done</text>
+
+  <!-- sample rows -->
+  <rect x="40" y="180" width="920" height="28" fill="#ffffff" />
+  <text x="56" y="200" font-family="Arial, sans-serif" font-size="13" fill="#1f2937">1</text>
+  <text x="140" y="200" font-family="Arial, sans-serif" font-size="13" fill="#1f2937">Buy milk and eggs</text>
+  <text x="760" y="200" font-family="Arial, sans-serif" font-size="13" fill="#1f2937">1</text>
+
+  <rect x="40" y="212" width="920" height="28" fill="#f8fafc" />
+  <text x="56" y="232" font-family="Arial, sans-serif" font-size="13" fill="#1f2937">3</text>
+  <text x="140" y="232" font-family="Arial, sans-serif" font-size="13" fill="#1f2937">Finish assingement</text>
+  <text x="760" y="232" font-family="Arial, sans-serif" font-size="13" fill="#1f2937">1</text>
+
+  <rect x="40" y="244" width="920" height="28" fill="#ffffff" />
+  <text x="56" y="264" font-family="Arial, sans-serif" font-size="13" fill="#1f2937">4</text>
+  <text x="140" y="264" font-family="Arial, sans-serif" font-size="13" fill="#1f2937">Test persistence</text>
+  <text x="760" y="264" font-family="Arial, sans-serif" font-size="13" fill="#1f2937">0</text>
+
+  <rect x="40" y="276" width="920" height="28" fill="#f8fafc" />
+  <text x="56" y="296" font-family="Arial, sans-serif" font-size="13" fill="#1f2937">5</text>
+  <text x="140" y="296" font-family="Arial, sans-serif" font-size="13" fill="#1f2937">Test persistence</text>
+  <text x="760" y="296" font-family="Arial, sans-serif" font-size="13" fill="#1f2937">0</text>
+
+  <text x="40" y="346" font-family="Arial, sans-serif" font-size="12" fill="#6b7280">Viewer: DB Browser / sqlitebrowser (illustration)</text>
+</svg>
