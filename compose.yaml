@@ -4,7 +4,7 @@ services:
     ports:
       - "8000:8000"
     environment:
-      DATABASE_URL: ${DATABASE_URL:-postgresql://postgres:dev@db:5432/tasks}
+      DATABASE_URL: postgresql://postgres:dev@db:5432/tasks
     depends_on:
       db:
         condition: service_healthy
